@@ -1,7 +1,7 @@
 app: filenne-infrastructure
 service: filenne-infrastructure
 
-frameworkVersion: "3.29.0"
+frameworkVersion: "3.38.0"
 
 provider:
   iam:
