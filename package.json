@@ -1,0 +1,11 @@
+{
+  "name": "filenne-infrastructure",
+  "version": "1.0.0",
+  "description": "The Filenne service infrastructure",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fernando Rivera",
+  "license": "ISC"
+}

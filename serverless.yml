@@ -1,0 +1,108 @@
+app: filenne-infrastructure
+service: filenne-infrastructure
+
+frameworkVersion: "3.29.0"
+
+provider:
+  iam:
+    role:
+      Fn::GetAtt:
+        - FilenneInfrastructureLambdaExecutionRole
+        - Arn
+  name: aws
+  region: us-east-1
+  stage: ${opt:stage, 'dev'}
+  lambdaHashingVersion: 20201221
+
+package:
+  individually: true
+
+custom:
+  resourcesBucketName: filenne-resource-bucket
+  filesBucketName: filenne-files-bucket
+  cloudFrontKeyPair: ${ssm:/aws/reference/secretsmanager//filenne/infrastructure/cloudfront/keypair}
+  config:
+    dev:
+      environment: development
+      accountId: 296370543127
+    stg:
+      environment: staging
+    prd:
+      environment: release
+
+functions:
+  user-api:
+    handler: handler.handler
+    memorySize: 128
+    timeout: 30
+    runtime: python3.9
+    architecture: arm64
+    description: 'Serverless authorization services API.'
+    package:
+      artifact: user-api-artifact.zip
+      individually: true
+    environment:
+      REGION: ${self:provider.region}
+      SERVICE_ENVIRONMENT: ${self:provider.stage}
+      CLIENT_ID:
+        Ref: CognitoUserPoolClient
+      CLIENT_SECRET: ${ssm:/aws/reference/secretsmanager//filenne/authorizer/client/credentials}
+      USERPOOL_ID:
+        Ref: CognitoUserPool
+    layers:
+      - Ref: FastapiAuthorizerLambdaLayer
+    events:
+      - httpApi:
+          path: '/auth/{proxy+}'
+          method: '*'
+
+  api:
+    handler: handler.handler
+    memorySize: 256
+    timeout: 60
+    runtime: python3.9
+    architecture: arm64
+    description: 'Serverless Filenne services API.'
+    package:
+      artifact: api-artifact.zip
+      individually: true
+    environment:
+      REGION: ${self:provider.region}
+      SERVICE_ENVIRONMENT: ${self:provider.stage}
+      FILES_BUCKET_NAME: filesBucketName
+      FILE_SERVICE_BASE_URL: repo.filenne.io
+      CLOUDFRONT_PRIVATE_KEY: ${self:custom.cloudFrontKeyPair.privateKey}
+      CLOUDFRONT_PUBLIC_KEY_ID: !Ref VaultDistributionPublicKey
+    layers:
+      - Ref: FastapiLambdaLayer
+    events:
+      - httpApi:
+          path: '/{proxy+}'
+          method: '*'
+          cors: true
+
+layers:
+  fastapiAuthorizer:
+    package:
+      artifact: fastapi-authorizer-layer-artifact.zip
+    description: The FastAPI authorizer dependencies.
+    compatibleRuntimes:
+      - python3.9
+  fastapi:
+    package:
+      artifact: fastapi-layer-artifact.zip
+    description: The FastAPI dependencies.
+    compatibleRuntimes:
+      - python3.9
+
+resources:
+  - ${file(./.aws/secrets.yml)}
+  - ${file(./.aws/iam.yml)}
+  - ${file(./.aws/dynamodb.yml)}
+  - ${file(./.aws/cognito.yml)}
+  - ${file(./.aws/s3.yml)}
+
+  # Environment specific files
+  - ${file(./.aws/${self:provider.stage}/certificate_manager.yml)}
+  - ${file(./.aws/${self:provider.stage}/cloudfront.yml)}
+                    
