@@ -20,7 +20,7 @@ package:
 custom:
   resourcesBucketName: filenne-resource-bucket
   filesBucketName: filenne-files-bucket
-  cloudFrontKeyPair: ${ssm:/aws/reference/secretsmanager//filenne/infrastructure/cloudfront/keypair}
+  # cloudFrontKeyPair: ${ssm:/aws/reference/secretsmanager//filenne/infrastructure/cloudfront/keypair}
   config:
     dev:
       environment: development
@@ -46,7 +46,7 @@ functions:
       SERVICE_ENVIRONMENT: ${self:provider.stage}
       CLIENT_ID:
         Ref: CognitoUserPoolClient
-      CLIENT_SECRET: ${ssm:/aws/reference/secretsmanager//filenne/authorizer/client/credentials}
+      # CLIENT_SECRET: ${ssm:/aws/reference/secretsmanager//filenne/authorizer/client/credentials}
       USERPOOL_ID:
         Ref: CognitoUserPool
     layers:
@@ -71,8 +71,8 @@ functions:
       SERVICE_ENVIRONMENT: ${self:provider.stage}
       FILES_BUCKET_NAME: filesBucketName
       FILE_SERVICE_BASE_URL: repo.filenne.io
-      CLOUDFRONT_PRIVATE_KEY: ${self:custom.cloudFrontKeyPair.privateKey}
-      CLOUDFRONT_PUBLIC_KEY_ID: !Ref VaultDistributionPublicKey
+      # CLOUDFRONT_PRIVATE_KEY: ${self:custom.cloudFrontKeyPair.privateKey}
+      # CLOUDFRONT_PUBLIC_KEY_ID: !Ref VaultDistributionPublicKey
     layers:
       - Ref: FastapiLambdaLayer
     events:
