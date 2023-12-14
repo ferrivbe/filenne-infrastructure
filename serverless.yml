@@ -79,7 +79,6 @@ functions:
       - httpApi:
           path: '/{proxy+}'
           method: '*'
-          cors: true
 
 layers:
   fastapiAuthorizer:
