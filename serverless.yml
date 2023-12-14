@@ -24,10 +24,10 @@ custom:
   config:
     dev:
       environment: development
-      accountId: 296370543127
     stg:
       environment: staging
     prd:
+      accountId: 296370543127
       environment: release
 
 functions:

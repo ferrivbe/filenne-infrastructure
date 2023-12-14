@@ -13,7 +13,7 @@ from middleware.exception import (
 )
 from middleware.request_logger import RequestLoggingHandler
 
-service_name = "shake-infrastructure"
+service_name = "filenne-infrastructure"
 app = FastAPI(title=service_name)
 
 logger = RequestLoggingHandler(service_name=service_name)

@@ -44,7 +44,7 @@ class LoggerHandler:
     as a method for populating details about the request to be included in the logs.
     """
 
-    def __init__(self, request: Request, service_name: str = "shake-infrastructure"):
+    def __init__(self, request: Request, service_name: str = "filenne-infrastructure"):
         """
         Initializes a new instance of the LoggerHandler class.
 

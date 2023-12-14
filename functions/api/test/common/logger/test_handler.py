@@ -9,7 +9,7 @@ class TestLoggerHandler:
 
     def test_init(self):
         assert self.logger_handler.request == self.request
-        assert self.logger_handler.service_name == "shake-infrastructure"
+        assert self.logger_handler.service_name == "filenne-infrastructure"
 
     def test__format_payload_with_trim_properties(self):
         payload = {"file_content": "a" * 200}
