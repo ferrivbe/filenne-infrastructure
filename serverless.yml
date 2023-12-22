@@ -46,7 +46,7 @@ functions:
       SERVICE_ENVIRONMENT: ${self:provider.stage}
       CLIENT_ID:
         Ref: CognitoUserPoolClient
-        CLIENT_SECRET: ${ssm:/aws/reference/secretsmanager//filenne/authorizer/client/credentials}
+      CLIENT_SECRET: ${ssm:/aws/reference/secretsmanager//filenne/authorizer/client/credentials}
       USERPOOL_ID:
         Ref: CognitoUserPool
     layers:
