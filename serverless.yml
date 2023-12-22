@@ -103,5 +103,5 @@ resources:
 
   # Environment specific files
   - ${file(./.aws/${self:provider.stage}/certificate_manager.yml)}
-  - ${file(./.aws/${self:provider.stage}/cloudfront.yml)}
+  # - ${file(./.aws/${self:provider.stage}/cloudfront.yml)}
                     
