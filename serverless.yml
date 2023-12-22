@@ -20,7 +20,7 @@ package:
 custom:
   resourcesBucketName: filenne-resource-bucket
   filesBucketName: filenne-files-bucket
-  # cloudFrontKeyPair: ${ssm:/aws/reference/secretsmanager//filenne/infrastructure/cloudfront/keypair}
+  cloudFrontKeyPair: ${ssm:/aws/reference/secretsmanager//filenne/infrastructure/cloudfront/keypair}
   config:
     dev:
       environment: development
