@@ -97,7 +97,7 @@ layers:
 resources:
   - ${file(./.aws/iam.yml)}
   - ${file(./.aws/secrets.yml)}
-  # - ${file(./.aws/dynamodb.yml)}
+  - ${file(./.aws/dynamodb.yml)}
   - ${file(./.aws/cognito.yml)}
   - ${file(./.aws/s3.yml)}
 
